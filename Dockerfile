@@ -1,5 +1,5 @@
 # setup working directory
-FROM maven AS build
+FROM maven:3.5.3 AS build
 RUN mkdir /app
 WORKDIR /app
 
@@ -9,7 +9,7 @@ COPY pom.xml /app
 RUN mvn -f /app/pom.xml clean package
 
 # deploy to tomcat server
-FROM tomcat 
+FROM tomcat:9.0.44 
 COPY --from=build app/target/simplewebapp.war /usr/local/tomcat/webapps
 EXPOSE 8080
 CMD ["catalina.sh", "run"]
